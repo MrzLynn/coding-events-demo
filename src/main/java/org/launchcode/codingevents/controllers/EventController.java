@@ -1,5 +1,8 @@
 package org.launchcode.codingevents.controllers;
 
+import org.launchcode.codingevents.data.EventRepository;
+import org.launchcode.codingevents.models.Event;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,16 +22,21 @@ public class EventController {
 
     private static List<String> events = new ArrayList<>();
 
+    @Autowired
+    private EventRepository eventRepository;
+
     @GetMapping
     public String displayAllEvents(Model model) {
         model.addAttribute("title", "All Events");
-        model.addAttribute("events", events);
+        model.addAttribute("events", eventRepository.findAll());
         return "events/index";
     }
 
     @GetMapping("create")
     public String displayCreateEventForm(Model model) {
         model.addAttribute("title", "Create Event");
+        model.addAttribute(new Event());
+        model.addAttribute("events","");
         return "events/create";
     }
 
